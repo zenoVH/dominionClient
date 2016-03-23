@@ -26,9 +26,9 @@ public class gui extends JFrame implements ActionListener{
 	
 	//Fonts
 	Font logoFont = new Font("Verdana", Font.BOLD, 100);
-	private final JLabel lblDominion = new JLabel("Dominion");
-	
+
 	//Menu Objects
+	JLabel lblDominion = new JLabel("Dominion");
 	JButton btnPlay = new JButton("Play");
 	JButton btnChallenge = new JButton("Challenge");
 	JButton btnExit = new JButton("EXIT");
@@ -36,6 +36,9 @@ public class gui extends JFrame implements ActionListener{
 	JButton btnSignUp = new JButton("Sign up");
 	JButton btnLeaderbord = new JButton("Leaderbord");
 	JButton btnSettings = new JButton("Settings\r\n");
+	
+	//Screens
+	gameSetupGUI setupScreen;
 	
 	
 	public gui(){
@@ -48,6 +51,9 @@ public class gui extends JFrame implements ActionListener{
 		drawMenu();
 		frame.setVisible(true);
 		
+		//Init Screens
+		setupScreen = new gameSetupGUI(window,this);
+		
 	}
 	
 	public void drawMenu(){
@@ -55,45 +61,60 @@ public class gui extends JFrame implements ActionListener{
 		//Load window
 		window = frame.getContentPane();
 		window.setBackground(UIManager.getColor("InternalFrame.borderLight"));
-		getContentPane().setLayout(null);
+		window.setLayout(null);
+		
+		
 		lblDominion.setBounds(342, 43, 477, 120);
 		lblDominion.setFont(new Font("Tahoma", Font.BOLD, 99));
-		getContentPane().add(lblDominion);
+		window.add(lblDominion);
 		
 		JLabel lblByMadmanProductions = new JLabel("By: Madman Productions");
 		lblByMadmanProductions.setBounds(481, 156, 220, 25);
 		lblByMadmanProductions.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		getContentPane().add(lblByMadmanProductions);
+		window.add(lblByMadmanProductions);
 
 		btnPlay.setBounds(131, 313, 238, 69);
 		btnPlay.setFont(new Font("Tahoma", Font.PLAIN, 50));
-		getContentPane().add(btnPlay);
+		window.add(btnPlay);
 
 		btnChallenge.setBounds(131, 406, 238, 69);
 		btnChallenge.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		getContentPane().add(btnChallenge);
+		window.add(btnChallenge);
 
 		btnExit.setBounds(131, 498, 238, 69);
 		btnExit.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		getContentPane().add(btnExit);
-		btnExit.addActionListener(this);
+		window.add(btnExit);
 
 		btnSignIn.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnSignIn.setBounds(761, 313, 138, 69);
-		getContentPane().add(btnSignIn);
+		window.add(btnSignIn);
 
 		btnSignUp.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnSignUp.setBounds(909, 313, 138, 69);
-		getContentPane().add(btnSignUp);
+		window.add(btnSignUp);
 		
 		btnLeaderbord.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		btnLeaderbord.setBounds(761, 406, 286, 69);
-		getContentPane().add(btnLeaderbord);
+		window.add(btnLeaderbord);
 		
 		btnSettings.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		btnSettings.setBounds(761, 498, 286, 69);
-		getContentPane().add(btnSettings);
+		window.add(btnSettings);
 		
+		//ActionListeners
+		btnPlay.addActionListener(this);
+		btnExit.addActionListener(this);
+		
+
+		
+		
+	}
+	
+	public void resetScreen(){
+		
+		window.removeAll();
+		window.revalidate();
+		window.repaint();
 		
 	}
 
@@ -102,6 +123,14 @@ public class gui extends JFrame implements ActionListener{
 		
 		if(input == btnExit){
 			System.exit(1);
+		}else if(input == btnPlay){
+			resetScreen();
+			setupScreen.draw("local");
+		}else if (input == setupScreen.exit){
+			resetScreen();
+			drawMenu();
+		}else if (input == setupScreen.jbPlay){
+			resetScreen();
 		}
 		
 	}
