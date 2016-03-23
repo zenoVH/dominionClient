@@ -6,3 +6,9 @@
 /Wiki-2015-Mar-NSA-Logo.png
 /howest_rgb.jpg
 /gameSetupGUI.class
+/gameEngine.class
+/graphicsEngine.class
+/player.class
+/deck.class
+/card.class
+/action.class
