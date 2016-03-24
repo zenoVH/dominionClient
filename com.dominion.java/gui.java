@@ -39,9 +39,10 @@ public class gui extends JFrame implements ActionListener{
 	
 	//Screens
 	gameSetupGUI setupScreen;
-	graphicsEngine engine;
 	
-	
+	//Engines
+	gameEngine gameEngine;
+
 	public gui(){
 		
 		//Setup JFrame
@@ -54,7 +55,7 @@ public class gui extends JFrame implements ActionListener{
 		
 		//Init Screens
 		setupScreen = new gameSetupGUI(window,this);
-		engine = new graphicsEngine("local", setupScreen.playersAmount);
+		
 		
 	}
 	
@@ -128,12 +129,15 @@ public class gui extends JFrame implements ActionListener{
 		}else if(input == btnPlay){
 			resetScreen();
 			setupScreen.draw("local");
-		}else if (input == setupScreen.exit || input == engine.quit){
+		}else if (input == setupScreen.exit){
 			resetScreen();
 			drawMenu();
 		}else if (input == setupScreen.jbPlay){
 			resetScreen();
-			engine.init(window,this);
+			
+			gameEngine = new gameEngine(window,"local", setupScreen.playersAmount);
+			gameEngine.start();
+			
 		}
 		
 	}

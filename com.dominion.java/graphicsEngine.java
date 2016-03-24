@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -11,33 +14,39 @@ public class graphicsEngine {
 	ActionListener action;
 	private int players;
 	private String mode;
+	Container window;
 	
 	//JButtons
-	JButton quit = new JButton("Quit");
+	public JButton quit = new JButton("Quit");
 	JButton save = new JButton("Save and Quit");
 	
 	//JLabels
 	JLabel currentPlayer = new JLabel("Player 1");
-	JLabel actions = new JLabel("Actions");
-	JLabel buys = new JLabel("Buys");
-	JLabel money = new JLabel("Coins");
+	JLabel actions = new JLabel("Actions:");
+	JLabel buys = new JLabel("Buys:");
+	JLabel money = new JLabel("Coins:");
 	
-	public graphicsEngine(String mode,int players){
-		this.players = players;
-		this.mode = mode;
-	}
+	//Jpanels
+	JPanel jpHand = new JPanel();
+	JPanel jpPlayedCards = new JPanel();
+	ArrayList<JPanel> handSlots = new ArrayList<JPanel>();
+	ArrayList<JPanel> playedSlots = new ArrayList<JPanel>();
+	
+	//MouseListner
+	MouseListener ml;
+	
+	public graphicsEngine(){}
 	
 	public void init(Container window, ActionListener action){
+		
+		this.window = window;
 		this.action = action;
-		if(mode.equals("local")){
-			localSetup(window);
-		}else if(mode.equals("online")){
-			
-		}
+		
 	}
 	
-	public void localSetup(Container window){
+	public void localSetup(MouseListener ml){
 		
+		this.ml = ml;
 		window.setLayout(new FlowLayout());
 		window.setBackground(Color.GREEN);
 		
@@ -117,13 +126,11 @@ public class graphicsEngine {
 			Column3.add(jpActionStore);
 			
 			//playedCards
-			JPanel jpPlayedCards = new JPanel();
 			jpPlayedCards.setPreferredSize(new Dimension(655, 185));
 			jpPlayedCards.setBackground(Color.gray);
 			Column3.add(jpPlayedCards);
 			
 			//hand
-			JPanel jpHand = new JPanel();
 			jpHand.setPreferredSize(new Dimension(655, 185));
 			jpHand.setBackground(Color.gray);
 			Column3.add(jpHand);
@@ -147,5 +154,66 @@ public class graphicsEngine {
 			//ActionListeners
 			quit.addActionListener(action);
 		
+	}
+
+	public void drawHandCards(ArrayList<card> hand){
+		
+		jpHand.removeAll();
+		handSlots.clear();
+		
+		for (int i = 0; i < hand.size(); i++) {
+			
+			
+			JPanel cardPanel = new JPanel();
+			cardPanel.setPreferredSize(new Dimension(120, 175));
+			cardPanel.setBackground(Color.RED);
+			cardPanel.addMouseListener(ml);
+			jpHand.add(cardPanel);
+			drawCard(cardPanel, hand.get(i));
+			
+			handSlots.add(cardPanel);
+			
+		}
+		
+		jpHand.revalidate();
+		jpHand.repaint();
+
+	}
+	
+	public void drawPlayedCards(ArrayList<card> hand){
+		
+		jpPlayedCards.removeAll();
+		playedSlots.clear();
+		
+		for (int i = 0; i < hand.size(); i++) {
+			
+			
+			JPanel cardPanel = new JPanel();
+			cardPanel.setPreferredSize(new Dimension(120, 175));
+			cardPanel.setBackground(Color.RED);
+			jpPlayedCards.add(cardPanel);
+			drawCard(cardPanel, hand.get(i));
+			
+			playedSlots.add(cardPanel);
+			
+		}
+		
+		jpPlayedCards.revalidate();
+		jpPlayedCards.repaint();
+
+	}
+	
+	public void drawCard(JPanel dest, card card){
+		
+		dest.add(new JLabel(card.getName()));
+		
+	}
+	
+	public ArrayList<JPanel> getHandSlots(){
+		return handSlots;
+	}
+
+	public void setMoney(int money){
+		this.money.setText("Money: "+money);
 	}
 }

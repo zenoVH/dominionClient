@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class deck {
 	
@@ -16,6 +18,15 @@ public class deck {
 		for (int i = 0; i < 3; i++) {
 			cards.add(new card("victory","estate","",1,2));
 		}
+		
+		shuffleDeck();
+	}
+	
+	public void shuffleDeck(){
+		
+		long seed = System.nanoTime();
+		Collections.shuffle(cards, new Random(seed));
+		
 	}
 	
 	public ArrayList<card> getCards(){
