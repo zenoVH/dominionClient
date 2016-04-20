@@ -2,21 +2,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
-
-import com.sun.prism.Image;
-import com.sun.prism.paint.Color;
-
 import java.awt.Container;
+
+import SwingEngine.*;
 
 
 public class gui extends JFrame implements ActionListener{
@@ -41,7 +33,7 @@ public class gui extends JFrame implements ActionListener{
 	gameSetupGUI setupScreen;
 	
 	//Engines
-	gameEngine gameEngine;
+	SwingEngine swing = new SwingEngine();
 
 	public gui(){
 		
@@ -132,11 +124,16 @@ public class gui extends JFrame implements ActionListener{
 		}else if (input == setupScreen.exit){
 			resetScreen();
 			drawMenu();
+		}else if (input == swing.quit){
+			resetScreen();
+			swing = new SwingEngine();
+			drawMenu();	
 		}else if (input == setupScreen.jbPlay){
 			resetScreen();
 			
-			gameEngine = new gameEngine(window,"local", setupScreen.playersAmount);
-			gameEngine.start();
+			swing.init(window, this);
+			swing.localSetup();
+			swing.startGame(setupScreen.playersAmount);
 			
 		}
 		

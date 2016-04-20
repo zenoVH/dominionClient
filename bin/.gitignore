@@ -7,3 +7,5 @@
 /gui.class
 /player.class
 /run.class
+/gameEngine/
+/SwingEngine/
