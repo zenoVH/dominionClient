@@ -1,11 +1,3 @@
-/action.class
-/card.class
-/deck.class
-/gameEngine.class
-/gameSetupGUI.class
-/graphicsEngine.class
-/gui.class
-/player.class
-/run.class
-/gameEngine/
-/SwingEngine/
+/org/
+/NetworkEngine/
+/settings.properties

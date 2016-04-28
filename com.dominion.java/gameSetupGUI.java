@@ -4,6 +4,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class gameSetupGUI implements ActionListener{
 	
@@ -11,11 +14,15 @@ public class gameSetupGUI implements ActionListener{
 	
 	//Menu Objects
 	Container window;
-	JButton exit = new JButton("Exit");
-	JButton jb2PL = new JButton("2 Players");
-	JButton jb3PL = new JButton("3 Players");
-	JButton jb4PL = new JButton("4 Players");
-	JButton jbPlay = new JButton("Play");
+	JButton JButton_play = new JButton("Play");
+	JButton JButton_Players4 = new JButton("4");
+	JButton Jbutton_back = new JButton("Back");
+	JButton JButton_Players3 = new JButton("3");
+	JButton JButton_Players2 = new JButton("2");
+	
+	
+	JTextField inviteField = new JTextField();
+	JButton btnInvite = new JButton("Invite");
 	
 	//logic
 	int playersAmount = 2;
@@ -29,72 +36,92 @@ public class gameSetupGUI implements ActionListener{
 		if(mode.equals("local")){
 			drawLocal();
 		}else if(mode.equals("online")){
-			
+			drawOnline();
 		}
 	}
 
 	public void drawLocal(){
 		
-		exit.setBounds(975,700,200,50);
-		exit.setFont(new Font("Tahoma", Font.BOLD, 30));
-		window.add(exit);
+		JLabel lblLocal = new JLabel("Local");
+		lblLocal.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLocal.setFont(new Font("Yu Gothic", Font.BOLD, 30));
+		lblLocal.setBounds(17, 11, 465, 60);
+		window.add(lblLocal);
 		
-		JLabel jlTitle = new JLabel("Local"); 
-		jlTitle.setBounds(131, 100, 477, 120);
-		jlTitle.setFont(new Font("Tahoma", Font.BOLD, 50));
-		window.add(jlTitle);
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setBounds(29, 69, 442, 2);
+		window.add(separator_3);
 		
-		JLabel jlPlayers = new JLabel("Players");
-		jlPlayers.setBounds(150, 250, 200, 50);
-		jlPlayers.setFont(new Font("Tahoma",Font.PLAIN, 30));
-		window.add(jlPlayers);
+
+		JButton_Players2.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		JButton_Players2.setBounds(135, 108, 70, 70);
+		window.add(JButton_Players2);
 		
-		jb2PL.setBounds(300, 250, 150, 50);
-		jb2PL.setBackground(Color.CYAN);
-		window.add(jb2PL);
+
+		JButton_Players3.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		JButton_Players3.setBounds(215, 108, 70, 70);
+		window.add(JButton_Players3);
 		
-		jb3PL.setBounds(500, 250, 150, 50);
-		jb3PL.setBackground(Color.WHITE);
-		window.add(jb3PL);
+
+		JButton_Players4.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		JButton_Players4.setBounds(295, 108, 70, 70);
+		window.add(JButton_Players4);
 		
-		jb4PL.setBounds(700, 250, 150, 50);
-		jb4PL.setBackground(Color.WHITE);
-		window.add(jb4PL);
+
+		Jbutton_back.setBounds(135, 254, 89, 23);
+		window.add(Jbutton_back);
 		
-		jbPlay.setBounds(150,350,700,100);
-		jbPlay.setFont(new Font("Tahoma", Font.BOLD, 50));
-		window.add(jbPlay);
+
+		JButton_play.setBounds(276, 254, 89, 23);
+		JButton_play.setEnabled(false);
+		window.add(JButton_play);
 		
 		window.revalidate();
 		window.repaint();
 		
 		//actionListeners
-		exit.addActionListener(action);
-		jbPlay.addActionListener(action);
-		jb2PL.addActionListener(this);
-		jb3PL.addActionListener(this);
-		jb4PL.addActionListener(this);
+		Jbutton_back.addActionListener(action);
+		JButton_play.addActionListener(action);
+		JButton_Players2.addActionListener(this);
+		JButton_Players3.addActionListener(this);
+		JButton_Players4.addActionListener(this);
+	}
+	
+	public void drawOnline(){
+		
+		window.setLayout(new FlowLayout());
+		
+		JLabel lbl = new JLabel("players");
+		inviteField.setPreferredSize(new Dimension(200, 30));
+		window.add(lbl);
+		window.add(inviteField);
+		window.add(btnInvite);
+		
+		btnInvite.addActionListener(action);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Object input = arg0.getSource();
 		
-		if (input == jb2PL){
+		if (input == JButton_Players2){
 			playersAmount =2;
-			jb2PL.setBackground(Color.CYAN);
-			jb3PL.setBackground(Color.WHITE);
-			jb4PL.setBackground(Color.WHITE);
-		}else if (input == jb3PL){
+			JButton_play.setEnabled(true);
+			JButton_Players2.setBackground(Color.CYAN);
+			JButton_Players3.setBackground(Color.WHITE);
+			JButton_Players4.setBackground(Color.WHITE);
+		}else if (input == JButton_Players3){
 			playersAmount =3;
-			jb3PL.setBackground(Color.CYAN);
-			jb2PL.setBackground(Color.WHITE);
-			jb4PL.setBackground(Color.WHITE);
-		}else if (input == jb4PL){
+			JButton_play.setEnabled(true);
+			JButton_Players3.setBackground(Color.CYAN);
+			JButton_Players2.setBackground(Color.WHITE);
+			JButton_Players4.setBackground(Color.WHITE);
+		}else if (input == JButton_Players4){
 			playersAmount =4;
-			jb2PL.setBackground(Color.WHITE);
-			jb4PL.setBackground(Color.CYAN);
-			jb3PL.setBackground(Color.WHITE);
+			JButton_play.setEnabled(true);
+			JButton_Players2.setBackground(Color.WHITE);
+			JButton_Players4.setBackground(Color.CYAN);
+			JButton_Players3.setBackground(Color.WHITE);
 		}
 		
 	}
