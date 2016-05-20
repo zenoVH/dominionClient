@@ -61,27 +61,27 @@ public class SwingEngine implements MouseListener, ActionListener {
 	public void localSetup(){
 		
 		window.setLayout(new FlowLayout());
-		window.setBackground(Color.GREEN);
+		window.setBackground(Color.gray);
 		
 			//JPanels
 			JPanel Column1 = new JPanel();
 			Column1.setPreferredSize(new Dimension(150, 760));
-			Column1.setBackground(Color.CYAN);
+			Column1.setBackground(Color.WHITE);
 			window.add(Column1);
 			
 			JPanel Column2 = new JPanel();
 			Column2.setPreferredSize(new Dimension(150, 760));
-			Column2.setBackground(Color.CYAN);
+			Column2.setBackground(Color.WHITE);
 			window.add(Column2);
 			
 			JPanel Column3 = new JPanel();
 			Column3.setPreferredSize(new Dimension(665, 760));
-			Column3.setBackground(Color.CYAN);
+			Column3.setBackground(Color.GRAY);
 			window.add(Column3);
 			
 			JPanel Column4 = new JPanel();
 			Column4.setPreferredSize(new Dimension(200, 760));
-			Column4.setBackground(Color.CYAN);
+			Column4.setBackground(Color.WHITE);
 			window.add(Column4);
 			
 			//Save and Quit
@@ -95,7 +95,7 @@ public class SwingEngine implements MouseListener, ActionListener {
 			//spacer
 			JPanel spacer = new JPanel();
 			spacer.setPreferredSize(new Dimension(130, 400));
-			spacer.setBackground(Color.gray);
+			spacer.setBackground(Color.WHITE);
 			Column1.add(spacer);
 			
 			//currentPlayer
@@ -109,20 +109,20 @@ public class SwingEngine implements MouseListener, ActionListener {
 			//spacer
 			spacer = new JPanel();
 			spacer.setPreferredSize(new Dimension(140, 180));
-			spacer.setBackground(Color.gray);
+			spacer.setBackground(Color.WHITE);
 			Column2.add(spacer);
 			
 			//Trash
 			JPanel jpTrash = new JPanel();
 			jpTrash.setPreferredSize(new Dimension(140, 180));
-			jpTrash.setBackground(Color.gray);
+			jpTrash.setBackground(Color.WHITE);
 			jpTrash.add(new JLabel("Trash"));
 			Column2.add(jpTrash);
 			
 			//action,buys,money
 			JPanel jpActions = new JPanel();
 			jpActions.setPreferredSize(new Dimension(140, 375));
-			jpActions.setBackground(Color.gray);
+			jpActions.setBackground(Color.WHITE);
 			Column2.add(jpActions);
 			
 			actions.setPreferredSize(new Dimension(100, 50));
@@ -135,23 +135,23 @@ public class SwingEngine implements MouseListener, ActionListener {
 			
 			//To buy action cards
 			jpActionStore.setPreferredSize(new Dimension(655, 365));
-			jpActionStore.setBackground(Color.gray);
+			jpActionStore.setBackground(Color.WHITE);
 			Column3.add(jpActionStore);
 			
 			//playedCards
 			jpPlayedCards.setPreferredSize(new Dimension(655, 185));
-			jpPlayedCards.setBackground(Color.gray);
+			jpPlayedCards.setBackground(Color.WHITE);
 			Column3.add(jpPlayedCards);
 			
 			//hand
 			jpHand.setPreferredSize(new Dimension(655, 185));
-			jpHand.setBackground(Color.gray);
+			jpHand.setBackground(Color.WHITE);
 			Column3.add(jpHand);
 			
 			//store
 			JPanel jpStore = new JPanel();
 			jpStore.setPreferredSize(new Dimension(190, 555));
-			jpStore.setBackground(Color.gray);
+			jpStore.setBackground(Color.WHITE);
 			Column4.add(jpStore);
 			
 			buyCopper.setPreferredSize(new Dimension(180, 60));
@@ -181,9 +181,12 @@ public class SwingEngine implements MouseListener, ActionListener {
 			//deck
 			JPanel jpDeck = new JPanel();
 			jpDeck.setPreferredSize(new Dimension(190, 185));
-			jpDeck.setBackground(Color.gray);
+			jpDeck.setBackground(Color.WHITE);
 			Column4.add(jpDeck);
 			
+			JLabel deckImage = new JLabel();
+			deckImage.setIcon(loadImage.load(SwingEngine.class, "cards/back.png"));
+			jpDeck.add(deckImage);
 			
 			window.revalidate();
 			window.repaint();
@@ -210,7 +213,7 @@ public class SwingEngine implements MouseListener, ActionListener {
 						
 			JLabel cardPanel = new JLabel();
 			cardPanel.addMouseListener(this);
-			cardPanel.setIcon(getImageURL(hand.get(i).getUrl()));
+			cardPanel.setIcon(loadImage.load(SwingEngine.class, hand.get(i).getUrl()));
 			jpHand.add(cardPanel);
 			
 			handSlots.add(cardPanel);
@@ -244,7 +247,7 @@ public class SwingEngine implements MouseListener, ActionListener {
 		for (int i = 0; i < game.getActionCards().size(); i++) {
 			
 			JLabel background = new JLabel();
-	        background.setIcon(getImageURL(game.getActionCards().get(i).getUrl()));
+	        background.setIcon(loadImage.load(SwingEngine.class, game.getActionCards().get(i).getUrl()));
 	        background.addMouseListener(this);
 	        jpActionStore.add(background);
 			
@@ -260,7 +263,9 @@ public class SwingEngine implements MouseListener, ActionListener {
 	public void drawCard(JPanel dest, card card){
 		
 		JLabel background = new JLabel();
-        background.setIcon(getImageURL(card.getUrl()));
+		background.setPreferredSize(new Dimension(110, 175));
+        background.setIcon(loadImage.load(SwingEngine.class, card.getUrl()));
+        background.setBackground(Color.BLACK);
         dest.add(background);
 		
 	}
