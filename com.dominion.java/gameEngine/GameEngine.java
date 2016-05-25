@@ -39,26 +39,28 @@ public class GameEngine {
 	}
 	
 	public void nextTurn(){
+		
+		if(running){
 
-		if(currentplayer == players.size() - 1){
-			currentplayer = 0;
-			round++;
-		}else{
-			currentplayer++;
+			if(currentplayer == players.size() - 1){
+				currentplayer = 0;
+				round++;
+			}else{
+				currentplayer++;
+			}
+			
+			if(round > maxRounds){
+				running = false;
+				calculateScore();
+			}
+			
+			getPlayer().flushHandCards();
+			getPlayer().flushPlayedCards();
+			
+			getPlayer().resetStats();
+			getPlayer().fillHand();
+		
 		}
-		
-		if(round > maxRounds){
-			running = false;
-			calculateScore();
-		}
-		
-		getPlayer().flushHandCards();
-		getPlayer().flushPlayedCards();
-		
-		getPlayer().resetStats();
-		getPlayer().fillHand();
-		
-		
 		
 	}
 	
@@ -92,10 +94,7 @@ public class GameEngine {
 			getPlayer().getDeck().getCards().add(c);
 			getPlayer().addBuys(-1);
 			getPlayer().addCoins(-(c.getCost()));
-		}else{
-			System.out.println("Insufficient Resources to perform this purchase");
 		}
-		
 	}
 	
 	private void randomizeActionsCards(){
@@ -137,19 +136,16 @@ public class GameEngine {
 			players.get(i).flushPlayedCards();
 			
 			for (int j = 0; j < players.get(i).getDeck().getCards().size(); j++) {
-				if(players.get(i).getDeck().getCards().get(i).getType().equals("Victory")) players.get(i).victoryPoints += players.get(i).getDeck().getCards().get(i).getPoints();
+				if(players.get(i).getDeck().getCards().get(j).getType().equals("Victory")) players.get(i).victoryPoints += players.get(i).getDeck().getCards().get(j).getPoints();
 			}
 			if(players.get(i).victoryPoints > players.get(winner).victoryPoints) winner = i;
 		}
 		this.winner = winner;
 		
-		drawWinner();
+		JOptionPane.showMessageDialog(null, players.get(winner).getName()+" is the winner !");
 		
 	}
-	
-	public void drawWinner(){
-		JOptionPane.showConfirmDialog(null,"The Winner is "+players.get(winner).getName()+" ! ("+players.get(winner).victoryPoints+" points)");
-	}
+
 	
 	public player getPlayer(){
 		return players.get(currentplayer);

@@ -45,6 +45,8 @@ public class SwingEngine implements MouseListener, ActionListener {
 	JPanel jpHand = new JPanel();
 	JPanel jpPlayedCards = new JPanel();
 	JPanel jpActionStore = new JPanel();
+	JPanel curPlayer = new JPanel();
+	JPanel spacer = new JPanel();
 	ArrayList<JLabel> handSlots = new ArrayList<JLabel>();
 	ArrayList<JLabel> actionSlots = new ArrayList<JLabel>();
 	
@@ -98,13 +100,13 @@ public class SwingEngine implements MouseListener, ActionListener {
 			Column1.add(save);
 			
 			//spacer
-			JPanel spacer = new JPanel();
+
 			spacer.setPreferredSize(new Dimension(130, 400));
 			spacer.setBackground(Color.WHITE);
 			Column1.add(spacer);
 			
 			//currentPlayer
-			JPanel curPlayer = new JPanel();
+
 			curPlayer.setPreferredSize(new Dimension(130, 170));
 			curPlayer.setBackground(Color.white);
 			curPlayer.add(currentPlayer);
@@ -112,10 +114,10 @@ public class SwingEngine implements MouseListener, ActionListener {
 			Column1.add(curPlayer);
 			
 			//spacer
-			spacer = new JPanel();
-			spacer.setPreferredSize(new Dimension(140, 180));
-			spacer.setBackground(Color.WHITE);
-			Column2.add(spacer);
+			JPanel spacer2 = new JPanel();
+			spacer2.setPreferredSize(new Dimension(140, 180));
+			spacer2.setBackground(Color.WHITE);
+			Column2.add(spacer2);
 			
 			//Trash
 			JPanel jpTrash = new JPanel();
@@ -296,6 +298,10 @@ public class SwingEngine implements MouseListener, ActionListener {
 		drawHandCards(game.getPlayer().getHandCards());
 		drawPlayedCards(game.getPlayer().getPlayedCards());
 		
+		if (!game.running) {
+			drawVictory();
+		}
+		
 	}
 
 
@@ -397,6 +403,11 @@ public class SwingEngine implements MouseListener, ActionListener {
 	}
 
 	public void drawVictory() {
-		game.drawWinner();
+		spacer.removeAll();
+		for (int i = 0; i < game.getPlayers().size(); i++) {
+			player p = game.getPlayers().get(i);
+			JLabel label = new JLabel(p.getName()+" ("+p.victoryPoints+" points)");
+			spacer.add(label);
+		}
 	}
 }

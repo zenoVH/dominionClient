@@ -386,6 +386,7 @@ public class gui extends JFrame implements ActionListener{
 			window.removeAll();
 			swing = new SwingEngine();
 			drawMenu();	
+			JButton_Play.setEnabled(true);
 		}else if (input == setupScreen.JButton_play){
 			window.removeAll();
 			
