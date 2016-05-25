@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.sun.xml.internal.ws.api.pipe.Engine;
+
 import gameEngine.*;
 
 public class SwingEngine implements MouseListener, ActionListener {
@@ -49,12 +51,15 @@ public class SwingEngine implements MouseListener, ActionListener {
 	//Engine
 	GameEngine game = new GameEngine();
 	
+	private int maxRounds = 10;
+	
 	public SwingEngine(){}
 	
-	public void init(Container window, ActionListener action){
+	public void init(Container window, ActionListener action, int max){
 		
 		this.window = window;
 		this.action = action;
+		maxRounds = max;
 		
 	}
 	
@@ -198,7 +203,7 @@ public class SwingEngine implements MouseListener, ActionListener {
 
 	public void startGame(int players){
 		
-		game.init(players);
+		game.init(players, maxRounds);
 		refreshScreen();
 		drawActionCards();
 		
@@ -285,13 +290,14 @@ public class SwingEngine implements MouseListener, ActionListener {
 		buys.setText("Buys: "+game.getPlayer().getBuys());
 		actions.setText("Actions: "+game.getPlayer().getActions());
 		currentPlayer.setText(game.getPlayer().getName());
-		round.setText("Round: "+game.getRound());
+		round.setText("Round: "+game.getRound()+" (max:"+game.maxRounds+")");
 		
 		
 		drawHandCards(game.getPlayer().getHandCards());
 		drawPlayedCards(game.getPlayer().getPlayedCards());
 		
 	}
+
 
 	
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -384,5 +390,13 @@ public class SwingEngine implements MouseListener, ActionListener {
 		
 		
 		
+	}
+
+	public boolean getRunning() {
+	return game.running;
+	}
+
+	public void drawVictory() {
+		game.drawWinner();
 	}
 }

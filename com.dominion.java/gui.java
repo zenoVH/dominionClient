@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import com.sun.xml.internal.ws.api.pipe.Engine;
+
 import NetworkEngine.friend;
 import NetworkEngine.netEngineClient;
 import java.awt.Color;
@@ -41,7 +44,6 @@ public class gui extends JFrame implements ActionListener{
 	JLabel JLabel_AvatarIcon2 = new JLabel("");
 	JPanel JPanel_SetupPanel = new JPanel();
 	JButton JButton_PlayLocal = new JButton("Local");
-	JButton Jbutton_PlayOnline = new JButton("Online");
 	JPanel Jpanel_CenterWindow = new JPanel();
 	JTextField JTextField_AddFriend = new JTextField();
 	JPanel JPanel_SideBar = new JPanel();
@@ -75,8 +77,14 @@ public class gui extends JFrame implements ActionListener{
 		setupScreen = new gameSetupGUI(JPanel_SetupPanel,this);
 		
 		//connectToServer
-		server = new netEngineClient();
-		server.setUsername(name);
+		
+		try {
+			server = new netEngineClient();
+			server.setUsername(name);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		
 		//Gui loop
 		while (true) {
@@ -97,11 +105,9 @@ public class gui extends JFrame implements ActionListener{
 		if(server.online()){
 			JLabel_NetworkStatus.setText("Online");
 			JLabel_NetworkStatus.setForeground(Color.green);
-			Jbutton_PlayOnline.setEnabled(true);
 		}else{
 			JLabel_NetworkStatus.setText("Offline");
 			JLabel_NetworkStatus.setForeground(Color.red);
-			Jbutton_PlayOnline.setEnabled(false);
 			server.connectToServer();
 		}
 		JPanel_SetupPanel.revalidate();
@@ -274,17 +280,10 @@ public class gui extends JFrame implements ActionListener{
 		JButton_PlayLocal.setBackground(new Color(0, 128, 128));
 		JButton_PlayLocal.setFont(new Font("Yu Gothic", Font.PLAIN, 16));
 		
-
-		Jbutton_PlayOnline.setBounds(150, 180, 200, 50);
-		JPanel_SetupPanel.add(Jbutton_PlayOnline);
-		Jbutton_PlayOnline.setBackground(new Color(0, 128, 128));
-		Jbutton_PlayOnline.setFont(new Font("Yu Gothic", Font.PLAIN, 16));
-		
 		JButton_Play.setEnabled(false);
 		
 		//ActionListeners
 		JButton_PlayLocal.addActionListener(this);
-		Jbutton_PlayOnline.addActionListener(this);
 		
 	}
 	
@@ -377,7 +376,7 @@ public class gui extends JFrame implements ActionListener{
 			reDrawSetupScreen();
 		}else if(input == JButton_PlayLocal){
 			JPanel_SetupPanel.removeAll();
-			setupScreen.draw("local");
+			setupScreen.draw();
 			reDrawSetupScreen();
 		}else if (input == setupScreen.Jbutton_back){
 			JPanel_SetupPanel.removeAll();
@@ -390,19 +389,9 @@ public class gui extends JFrame implements ActionListener{
 		}else if (input == setupScreen.JButton_play){
 			window.removeAll();
 			
-			swing.init(window, this);
+			swing.init(window, this, setupScreen.getMaxRounds());
 			swing.localSetup();
 			swing.startGame(setupScreen.playersAmount);
-			
-		}else if (input == Jbutton_PlayOnline){
-			
-			JPanel_SetupPanel.removeAll();
-			setupScreen.draw("online");
-			reDrawSetupScreen();
-			
-		}else if (input == setupScreen.btnInvite){
-			
-			//server.inviteToLobby(setupScreen.inviteField.getText());
 			
 		}else if (input == JButton_addPlayer){
 			

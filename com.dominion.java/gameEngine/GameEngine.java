@@ -4,18 +4,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class GameEngine {
+	
+	public boolean running;
 	
 	private ArrayList<player> players = new ArrayList<player>();	// players array
 	private ArrayList<card> actionCards = new ArrayList<card>();	// action cards
 	private int currentplayer;	// index of array
 	private int round = 1;
+	private ActionHandler actions;
+	public int maxRounds = 10;
+	private int winner;
 	
 	public GameEngine(){
-		
+		running = true;
 	}
 	
-	public void init(int players){
+	public void init(int players, int rounds){
+		
+		maxRounds = rounds;
 		
 		// construct players
 		for (int i = 0; i < players; i++) {
@@ -25,10 +34,12 @@ public class GameEngine {
 		
 		randomizeActionsCards();
 		
+		actions = new ActionHandler(this);
+		
 	}
 	
 	public void nextTurn(){
-		
+
 		if(currentplayer == players.size() - 1){
 			currentplayer = 0;
 			round++;
@@ -36,26 +47,24 @@ public class GameEngine {
 			currentplayer++;
 		}
 		
-		//store played cards in deck
-		for (int i = 0; i < getPlayer().getPlayedCards().size(); i++) {
-			getPlayer().getDeck().getCards().add(getPlayer().getPlayedCards().get(i));
+		if(round > maxRounds){
+			running = false;
+			calculateScore();
 		}
 		
-		//store hand cards in deck
-		for (int i = 0; i < getPlayer().getHandCards().size(); i++) {
-			getPlayer().getDeck().getCards().add(getPlayer().getHandCards().get(i));
-		}
+		getPlayer().flushHandCards();
+		getPlayer().flushPlayedCards();
 		
 		getPlayer().resetStats();
-		getPlayer().getPlayedCards().clear();
-		getPlayer().getHandCards().clear();
 		getPlayer().fillHand();
+		
+		
 		
 	}
 	
 	public void cardInHandClicked(int index){
 		
-		if(getPlayer().getHandCards().get(index).getType().equals("Treasure")){
+		if(getPlayer().getHandCards().get(index).getType().equals("Treasure") && running){
 			
 			// Add coins
 			getPlayer().addCoins(getPlayer().getHandCards().get(index).getValue());
@@ -64,10 +73,14 @@ public class GameEngine {
 			getPlayer().getPlayedCards().add(getPlayer().getHandCards().get(index));
 			getPlayer().getHandCards().remove(index);
 			
-		}else if(getPlayer().getHandCards().get(index).getType().equals("Action")){
+		}else if(getPlayer().getHandCards().get(index).getType().equals("Action") && running){
 			
-			//actions TODO
-			System.out.println("action card: "+getPlayer().getHandCards().get(index).getName());
+			// send card to actionHandler
+			actions.actionCard(getPlayer().getHandCards().get(index));
+			
+			// Move to Played cards
+			getPlayer().getPlayedCards().add(getPlayer().getHandCards().get(index));
+			getPlayer().getHandCards().remove(index);
 			
 		}
 		
@@ -75,7 +88,7 @@ public class GameEngine {
 	
 	public void buyCard(card c){
 		
-		if(getPlayer().getCurrentCoins() >= c.getCost() && getPlayer().getBuys() > 0){
+		if(getPlayer().getCurrentCoins() >= c.getCost() && getPlayer().getBuys() > 0 && running){
 			getPlayer().getDeck().getCards().add(c);
 			getPlayer().addBuys(-1);
 			getPlayer().addCoins(-(c.getCost()));
@@ -117,8 +130,33 @@ public class GameEngine {
 		
 	}
 	
+	private void calculateScore(){
+		int winner = 0;
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).flushHandCards();
+			players.get(i).flushPlayedCards();
+			
+			for (int j = 0; j < players.get(i).getDeck().getCards().size(); j++) {
+				if(players.get(i).getDeck().getCards().get(i).getType().equals("Victory")) players.get(i).victoryPoints += players.get(i).getDeck().getCards().get(i).getPoints();
+			}
+			if(players.get(i).victoryPoints > players.get(winner).victoryPoints) winner = i;
+		}
+		this.winner = winner;
+		
+		drawWinner();
+		
+	}
+	
+	public void drawWinner(){
+		JOptionPane.showConfirmDialog(null,"The Winner is "+players.get(winner).getName()+" ! ("+players.get(winner).victoryPoints+" points)");
+	}
+	
 	public player getPlayer(){
 		return players.get(currentplayer);
+	}
+	
+	public ArrayList<player> getPlayers(){
+		return players;
 	}
 	
 	public int getRound(){

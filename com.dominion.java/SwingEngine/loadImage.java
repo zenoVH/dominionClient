@@ -13,11 +13,9 @@ public class loadImage {
 		
 		try {
 			icon = new ImageIcon(url);
-			System.out.println(icon);
 			return icon;
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(icon);
 			return null;
 		}
 		

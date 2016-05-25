@@ -19,6 +19,7 @@ public class gameSetupGUI implements ActionListener{
 	JButton Jbutton_back = new JButton("Back");
 	JButton JButton_Players3 = new JButton("3");
 	JButton JButton_Players2 = new JButton("2");
+	JTextField JTextField_maxRounds = new JTextField("10");
 	
 	
 	JTextField inviteField = new JTextField();
@@ -32,12 +33,8 @@ public class gameSetupGUI implements ActionListener{
 		this.action = action;
 	}
 	
-	public void draw(String mode){
-		if(mode.equals("local")){
-			drawLocal();
-		}else if(mode.equals("online")){
-			drawOnline();
-		}
+	public void draw(){
+		drawLocal();
 	}
 
 	public void drawLocal(){
@@ -67,6 +64,9 @@ public class gameSetupGUI implements ActionListener{
 		JButton_Players4.setBounds(295, 108, 70, 70);
 		window.add(JButton_Players4);
 		
+		JTextField_maxRounds.setBounds(215, 200, 70, 30);
+		window.add(JTextField_maxRounds);
+		
 
 		Jbutton_back.setBounds(135, 254, 89, 23);
 		window.add(Jbutton_back);
@@ -87,17 +87,13 @@ public class gameSetupGUI implements ActionListener{
 		JButton_Players4.addActionListener(this);
 	}
 	
-	public void drawOnline(){
+	
+	public int getMaxRounds(){
 		
-		window.setLayout(new FlowLayout());
+		int r = Integer.parseInt(JTextField_maxRounds.getText());;
+		if(r > 1) return r;
+		return 10;
 		
-		JLabel lbl = new JLabel("players");
-		inviteField.setPreferredSize(new Dimension(200, 30));
-		window.add(lbl);
-		window.add(inviteField);
-		window.add(btnInvite);
-		
-		btnInvite.addActionListener(action);
 	}
 
 	@Override
